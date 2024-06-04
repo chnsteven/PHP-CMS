@@ -9,6 +9,9 @@ define("PRIVATE_PATH", dirname(__FILE__));
 define("PROJECT_PATH", dirname(PRIVATE_PATH));
 define("PUBLIC_PATH", PROJECT_PATH . '/public');
 define("SHARED_PATH", PRIVATE_PATH . '/shared');
+define("PRIVATE_HEADER", SHARED_PATH . '/admin_header.php');
+define("PRIVATE_FOOTER", SHARED_PATH . '/admin_footer.php');
+
 
 // Assign the root URL to a PHP constant
 // * Do not need to include the domain
@@ -26,6 +29,7 @@ require_once('database.php');
 require_once('query_functions.php');
 require_once('validation_functions.php');
 require_once('auth_functions.php');
+require_once('classes.php');
 
 $db = db_connect();
 $errors = [];

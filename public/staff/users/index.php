@@ -1,48 +1,18 @@
 <?php require_once('../../../private/initialize.php'); ?>
+<?php include(PRIVATE_HEADER); ?>
+<?php
+$user_set = find_all_users() ?? false;
+if (!$user_set) {
+    die("Reading user information failed.");
+}
 
-<?php $page_title = 'Users'; ?>
-<?php include(SHARED_PATH . '/staff_header.php'); ?>
+$page_title = 'Users';
+$headers = ['id', 'username', 'post_content', 'post_date', 'user_uuid', 'is_posted'];
 
-<div id="content">
-    <div class="subjects listing">
-        <h1>Users</h1>
+$user_page_renderer = new PageRenderer($user_set, $headers, $page_title);
+$user_page_renderer->render();
 
-        <!-- <div class="actions">
-            <a class="action" href="<?php echo url_for('/staff/subjects/new.php'); ?>">Create New Subject</a>
-        </div>
 
-        <table class="list">
-            <tr>
-                <th>ID</th>
-                <th>Position</th>
-                <th>Visible</th>
-                <th>Name</th>
-                <th>Pages</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-
-            <?php while ($subject = mysqli_fetch_assoc($subject_set)) { ?>
-                <?php $page_count = count_pages_by_subject_id($subject['id']); ?>
-                <tr>
-                    <td><?php echo h($subject['id']); ?></td>
-                    <td><?php echo h($subject['position']); ?></td>
-                    <td><?php echo $subject['visible'] == 1 ? 'true' : 'false'; ?></td>
-                    <td><?php echo h($subject['menu_name']); ?></td>
-                    <td><?php echo $page_count ?> </td>
-                    <td><a class="action" href="<?php echo url_for('/staff/subjects/show.php?id=' . h(u($subject['id']))); ?>">View</a></td>
-                    <td><a class="action" href="<?php echo url_for('/staff/subjects/edit.php?id=' . h(u($subject['id']))); ?>">Edit</a></td>
-                    <td><a class="action" href="<?php echo url_for('/staff/subjects/delete.php?id=' . h(u($subject['id']))); ?>">Delete</a></td>
-                </tr>
-            <?php } ?>
-        </table> -->
-
-        <?php
-        mysqli_free_result($subject_set);
-        ?>
-    </div>
-
-</div>
-
-<?php include(SHARED_PATH . '/staff_footer.php'); ?>
+mysqli_free_result($user_set);
+?>
+<?php include(PRIVATE_FOOTER); ?>
