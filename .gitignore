@@ -1,0 +1,9 @@
+# Ignore private configuration files
+/private/db_credentials.php
+
+# Ignore logs and temporary files
+/logs/
+/tmp/
+
+# Ignore IDE/Editor configuration files
+.vscode/
