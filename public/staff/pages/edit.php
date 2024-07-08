@@ -13,19 +13,14 @@ if (is_post_request()) {
   // Handle form values sent by new.php
 
   $page = [];
-  $page['id'] = $id;
-  $page['subject_id'] = $_POST['subject_id'] ?? '';
   $page['page_name'] = $_POST['page_name'] ?? '';
-  $page['position'] = $_POST['position'] ?? '';
+  $page['position'] = $_POST['position'] ?? '1';
   $page['visible'] = $_POST['visible'] ?? '';
   $page['content'] = $_POST['content'] ?? '';
+  $page['id'] = $id;
 
-  // $result = update_page($page);
-  // if ($result === true) {
-  //   redirect_to(url_for('/staff/pages/show.php?id=' . $id));
-  // } else {
-  //   $errors = $result;
-  // }
+  $result = update_table(PAGE_TABLE, PAGE_TABLE_TYPE_DEFINITION, $page);
+  redirect_to(url_for('/staff/pages/index.php'));
 } else {
 
   $page = find_by_id(PAGE_TABLE, $id);
@@ -48,30 +43,12 @@ if (is_post_request()) {
 
     <form action="<?php echo url_for('/staff/pages/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>
-        <dt>Subject</dt>
-        <dd>
-          <select name="subject_id">
-            <?php
-            // $subject_set = find_all_subjects();
-            // while ($subject = mysqli_fetch_assoc($subject_set)) {
-            //   echo "<option value=\"" . h($subject['id']) . "\"";
-            //   if ($page["subject_id"] == $subject['id']) {
-            //     echo " selected";
-            //   }
-            //   echo ">" . h($subject['menu_name']) . "</option>";
-            // }
-            // mysqli_free_result($subject_set);
-            ?>
-          </select>
-        </dd>
-      </dl>
-      <dl>
         <dt>Page Name</dt>
         <dd><input type="text" name="page_name" value="<?php echo h($page['page_name']); ?>" /></dd>
       </dl>
       <dl>
         <dt>Position</dt>
-        <dd>
+        <!-- <dd>
           <select name="position">
             <?php
             for ($i = 1; $i <= $page_count; $i++) {
@@ -83,7 +60,7 @@ if (is_post_request()) {
             }
             ?>
           </select>
-        </dd>
+        </dd> -->
       </dl>
       <dl>
         <dt>Visible</dt>

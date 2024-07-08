@@ -178,6 +178,46 @@ function update_page($page)
   }
 }
 
+function update_table($table, $type_definition, $values)
+{
+  global $db;
+
+  // TODO: robust validate function
+  // $errors = validate_page($page);
+  // if (!empty($errors)) {
+  //   return $errors;
+  // }
+  $query = "UPDATE " . db_escape($db, $table) . " SET ";
+
+  foreach ($values as $column => $value) {
+    if ($column !== 'id') {
+      $query .= db_escape($db, $column) . " = ?, ";
+      $params[] = db_escape($db, $value);
+    }
+  }
+
+  $query = rtrim($query, ", ");
+  $query .= " WHERE id = ? LIMIT 1";
+  $params[] = db_escape($db, $values['id']);
+
+  // echo $query;
+
+  $stmt = $db->prepare($query);
+  if ($stmt === false) {
+    die('mysqli prepare failed: ' . h($db->error));
+  }
+
+  $stmt->bind_param($type_definition, ...$params);
+
+  $result = $stmt->execute();
+  if ($result === false) {
+    die('mysqli prepare failed: ' . h($db->error));
+  }
+
+  $stmt->close();
+  return $result;
+}
+
 function delete_page($id)
 {
   global $db;
