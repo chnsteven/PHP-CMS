@@ -1,7 +1,6 @@
 <?php
 
 require_once('../../../private/initialize.php');
-require_login();
 if (is_post_request()) {
 
   $page = [];
@@ -34,11 +33,11 @@ $page_count = count_pages_by_subject_id($page['subject_id']) + 1;
 ?>
 
 <?php $page_title = 'Create Page'; ?>
-<?php include(SHARED_PATH . '/staff_header.php'); ?>
+<?php include(SHARED_PATH . '/admin_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/subjects/show.php?id=' . h(u($page['subject_id']))); ?>">&laquo; Back to Subject Page</a>
+  <a class="back-link" href="<?php echo url_for('/staff/subjects/show.php'); ?>">&laquo; Back to Page</a>
 
   <div class="page new">
     <h1>Create Page</h1>
@@ -108,4 +107,4 @@ $page_count = count_pages_by_subject_id($page['subject_id']) + 1;
 
 </div>
 
-<?php include(SHARED_PATH . '/staff_footer.php'); ?>
+<?php include(SHARED_PATH . '/admin_footer.php'); ?>

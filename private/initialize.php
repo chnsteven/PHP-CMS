@@ -11,6 +11,8 @@ define("PUBLIC_PATH", PROJECT_PATH . '/public');
 define("SHARED_PATH", PRIVATE_PATH . '/shared');
 define("PRIVATE_HEADER", SHARED_PATH . '/admin_header.php');
 define("PRIVATE_FOOTER", SHARED_PATH . '/admin_footer.php');
+define("PAGE_TABLE", 'pages');
+define("ADMIN_TABLE", 'admins');
 
 
 // Assign the root URL to a PHP constant

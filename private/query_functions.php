@@ -26,22 +26,44 @@ function find_all_pages($options = [])
 }
 
 // Pages
-function find_page_by_id($id, $options = [])
+// function find_page_by_id($id, $options = [])
+// {
+//   global $db;
+
+//   $visible = $options['visible'] ?? false;
+
+//   $sql = "SELECT * FROM pages ";
+//   $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+//   if ($visible) {
+//     $sql .= "AND visible = true";
+//   }
+//   $result = mysqli_query($db, $sql);
+//   confirm_result_set($result);
+//   $page = mysqli_fetch_assoc($result);
+//   mysqli_free_result($result);
+//   return $page; // returns an assoc. array
+// }
+
+
+function find_by_id($table, $id, $options = [])
 {
   global $db;
 
   $visible = $options['visible'] ?? false;
 
-  $sql = "SELECT * FROM pages ";
-  $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
-  if ($visible) {
-    $sql .= "AND visible = true";
-  }
-  $result = mysqli_query($db, $sql);
+  $query = "SELECT * FROM " . $table . " ";
+  $query .= "WHERE id = ? AND visible = true";
+
+  $stmt = $db->prepare($query);
+
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
   confirm_result_set($result);
-  $page = mysqli_fetch_assoc($result);
-  mysqli_free_result($result);
-  return $page; // returns an assoc. array
+  $result = $result->fetch_assoc();
+  $stmt->close();
+  return $result; // returns an assoc. array
 }
 
 function validate_page($page)

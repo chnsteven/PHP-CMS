@@ -25,3 +25,6 @@ CREATE TABLE `pages` (
   `content` TEXT,
   KEY `index_page_name` (`page_name`)
 );
+
+INSERT INTO `pages` VALUES (1,'Education',1,true, 'Education content');
+INSERT INTO `pages` VALUES (2,'Experience',2,true, 'Experience content');
