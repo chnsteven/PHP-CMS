@@ -52,7 +52,10 @@ function find_by_id($table, $id, $options = [])
   $visible = $options['visible'] ?? false;
 
   $query = "SELECT * FROM " . $table . " ";
-  $query .= "WHERE id = ? AND visible = true";
+  $query .= "WHERE id = ? ";
+  if ($visible) {
+    $query .= " AND visible = true";
+  }
 
   $stmt = $db->prepare($query);
 

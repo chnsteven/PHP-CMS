@@ -7,22 +7,19 @@ if (!isset($_GET['id'])) {
   redirect_to(url_for('/staff/pages/index.php'));
 }
 $id = $_GET['id'];
-
+// Handle form values sent by new.php
+$page = [
+  'page_name' => '',
+  'position' => '1',
+  'visible' => '0',
+  'content' => '',
+  'id' => $id
+];
+$page = replace_with_post_values($page);
 if (is_post_request()) {
-
-  // Handle form values sent by new.php
-
-  $page = [];
-  $page['page_name'] = $_POST['page_name'] ?? '';
-  $page['position'] = $_POST['position'] ?? '1';
-  $page['visible'] = $_POST['visible'] ?? '';
-  $page['content'] = $_POST['content'] ?? '';
-  $page['id'] = $id;
-
   $result = update_table(PAGE_TABLE, PAGE_TABLE_TYPE_DEFINITION, $page);
   redirect_to(url_for('/staff/pages/index.php'));
 } else {
-
   $page = find_by_id(PAGE_TABLE, $id);
 }
 

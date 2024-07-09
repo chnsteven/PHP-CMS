@@ -121,3 +121,12 @@ function create_table($set, $headers)
   // Return the table HTML
   return $output;
 }
+
+function replace_with_post_values($default_values)
+{
+  $result = [];
+  foreach ($default_values as $key => $default) {
+    $result[$key] = $_POST[$key] ?? $default;
+  }
+  return $result;
+}
