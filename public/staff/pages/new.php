@@ -1,16 +1,15 @@
 <?php
-
 require_once('../../../private/initialize.php');
 if (is_post_request()) {
+  $page = [
+    'page_name' => 'New Title',
+    'position' => '1',
+    'visible' => '1',
+    'content' => ''
+  ];
+  $page = replace_with_post_values($page);
 
-  $page = [];
-  $page['subject_id'] = $_POST['subject_id'] ?? '';
-  $page['menu_name'] = $_POST['menu_name'] ?? '';
-  $page['position'] = $_POST['position'] ?? '';
-  $page['visible'] = $_POST['visible'] ?? '';
-  $page['content'] = $_POST['content'] ?? '';
-
-  $result = insert_page($page);
+  $result = insert_values(PAGE_TABLE, PAGE_TABLE_TYPE_DEFINITION, $page);
   if ($result === true) {
     $new_id = mysqli_insert_id($db);
     $_SESSION['message'] = "The page was created successfully.";
@@ -19,25 +18,23 @@ if (is_post_request()) {
     $errors = $result;
   }
 } else {
-
-  $page = [];
-  $page['subject_id'] = $_GET['subject_id'] ?? '1';
-  $page['menu_name'] = '';
-  $page['position'] = '';
-  $page['visible'] = '';
-  $page['content'] = '';
+  // $page = [
+  //   'id' => $_GET['id'] ?? '1',
+  //   'page_name' => 'New title',
+  //   'position' => '1',
+  //   'visible' => '1',
+  //   'content' => 'New content'
+  // ];
 }
-
-$page_count = count_pages_by_subject_id($page['subject_id']) + 1;
 
 ?>
 
 <?php $page_title = 'Create Page'; ?>
-<?php include(SHARED_PATH . '/admin_header.php'); ?>
+<?php include(PRIVATE_HEADER); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/subjects/show.php'); ?>">&laquo; Back to Page</a>
+  <a class="back-link" href="<?php echo url_for('/staff/pages/index.php'); ?>">&laquo; Back</a>
 
   <div class="page new">
     <h1>Create Page</h1>
@@ -46,26 +43,8 @@ $page_count = count_pages_by_subject_id($page['subject_id']) + 1;
 
     <form action="<?php echo url_for('/staff/pages/new.php'); ?>" method="post">
       <dl>
-        <dt>Subject</dt>
-        <dd>
-          <select name="subject_id">
-            <?php
-            $subject_set = find_all_subjects();
-            while ($subject = mysqli_fetch_assoc($subject_set)) {
-              echo "<option value=\"" . h($subject['id']) . "\"";
-              if ($page["subject_id"] == $subject['id']) {
-                echo " selected";
-              }
-              echo ">" . h($subject['menu_name']) . "</option>";
-            }
-            mysqli_free_result($subject_set);
-            ?>
-          </select>
-        </dd>
-      </dl>
-      <dl>
-        <dt>Menu Name</dt>
-        <dd><input type="text" name="menu_name" value="<?php echo h($page['menu_name']); ?>" /></dd>
+        <dt>Page Name</dt>
+        <dd><input type="text" name="page_name" value="" /></dd>
       </dl>
       <dl>
         <dt>Position</dt>
@@ -87,15 +66,13 @@ $page_count = count_pages_by_subject_id($page['subject_id']) + 1;
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1" <?php if ($page['visible'] == "1") {
-                                                            echo " checked";
-                                                          } ?> />
+          <input type="checkbox" name="visible" value="1" />
         </dd>
       </dl>
       <dl>
         <dt>Content</dt>
         <dd>
-          <textarea name="content" cols="60" rows="10"><?php echo h($page['content']); ?></textarea>
+          <textarea name="content" cols="60" rows="10"></textarea>
         </dd>
       </dl>
       <div id="operations">
@@ -107,4 +84,4 @@ $page_count = count_pages_by_subject_id($page['subject_id']) + 1;
 
 </div>
 
-<?php include(SHARED_PATH . '/admin_footer.php'); ?>
+<?php include(PRIVATE_FOOTER); ?>

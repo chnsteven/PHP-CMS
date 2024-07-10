@@ -147,6 +147,44 @@ function insert_page($page)
   }
 }
 
+function insert_values($table, $type_definition, $values)
+{
+  global $db;
+
+  $query = "INSERT INTO " . db_escape($db, $table) . " (";
+
+  foreach ($values as $column => $value) {
+    $query .= db_escape($db, $column) . ", ";
+    $params[] = db_escape($db, $value);
+  }
+
+  $query = rtrim($query, ", ");
+  $query .= ") VALUES (";
+
+  for ($i = 0; $i < count($params); $i++) {
+    $query .= "?, ";
+  }
+
+  $query = rtrim($query, ", ");
+  $query .= ")";
+
+  echo $query;
+  $stmt = $db->prepare($query);
+  if ($stmt === false) {
+    die('mysqli prepare failed: ' . h($db->error));
+  }
+
+  $stmt->bind_param($type_definition, ...$params);
+
+  $result = $stmt->execute();
+  if ($result === false) {
+    die('mysqli prepare failed: ' . h($db->error));
+  }
+
+  $stmt->close();
+  return $result;
+}
+
 function update_page($page)
 {
   global $db;
@@ -202,6 +240,7 @@ function update_table($table, $type_definition, $values)
   $query = rtrim($query, ", ");
   $query .= " WHERE id = ? LIMIT 1";
   $params[] = db_escape($db, $values['id']);
+  $type_definition .= "i";
 
   // echo $query;
 

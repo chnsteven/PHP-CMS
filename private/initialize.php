@@ -20,7 +20,7 @@ define("PRIVATE_FOOTER", SHARED_PATH . '/admin_footer.php');
 //     KEY `index_page_name` (`page_name`)
 //   );
 define("PAGE_TABLE", 'pages');
-define("PAGE_TABLE_TYPE_DEFINITION", 'siisi'); // id is the last one
+define("PAGE_TABLE_TYPE_DEFINITION", 'siis'); // id is the last one
 // CREATE TABLE `users` (
 //     `id` INT PRIMARY KEY AUTO_INCREMENT,
 //     `username` VARCHAR(20) UNIQUE NOT NULL,
@@ -31,7 +31,7 @@ define("PAGE_TABLE_TYPE_DEFINITION", 'siisi'); // id is the last one
 //     KEY `index_username` (`username`)
 // );
 define("ADMIN_TABLE", 'admins');
-define("ADMIN_TABLE_TYPE_DEFINITION", 'ssssii');
+define("ADMIN_TABLE_TYPE_DEFINITION", 'ssssi');
 
 
 // Assign the root URL to a PHP constant
