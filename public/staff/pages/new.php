@@ -1,12 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
 if (is_post_request()) {
-  // $page = [
-  //   'page_name' => 'New Title',
-  //   'position' => '1',
-  //   'visible' => '1',
-  //   'content' => ''
-  // ];
   $page = array(
     'page_name' => 'New Title',
     'position' => '1',
@@ -23,14 +17,6 @@ if (is_post_request()) {
   } else {
     $errors = $result;
   }
-} else {
-  // $page = [
-  //   'id' => $_GET['id'] ?? '1',
-  //   'page_name' => 'New title',
-  //   'position' => '1',
-  //   'visible' => '1',
-  //   'content' => 'New content'
-  // ];
 }
 
 ?>

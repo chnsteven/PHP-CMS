@@ -1,7 +1,16 @@
 <?php
 ob_start(); // output buffering is turned on
-
 session_start(); // turn on session
+
+// Function to include all PHP files in a directory
+function include_all_files_in_directory($directory)
+{
+    foreach (glob($directory . '/*.php') as $filename) {
+        echo $filename;
+        require_once($filename);
+    }
+}
+
 // Assign file paths to PHP constants
 // __FILE__ returns the current path to this file
 // dirname() returns the path to the parent directory
@@ -30,6 +39,8 @@ define("PAGE_TABLE_TYPE_DEFINITION", 'siis'); // id is the last one
 //     `is_posted` TINYINT(1) DEFAULT 1,
 //     KEY `index_username` (`username`)
 // );
+define("USER_TABLE", 'users');
+define("USER_TABLE_TYPE_DEFINITION", 'ssssi');
 define("ADMIN_TABLE", 'admins');
 define("ADMIN_TABLE_TYPE_DEFINITION", 'ssssi');
 
@@ -50,7 +61,7 @@ require_once('database.php');
 require_once('query_functions.php');
 require_once('validation_functions.php');
 require_once('auth_functions.php');
-require_once('classes.php');
+require_once('renderer.php');
 
 $db = db_connect();
 $errors = [];

@@ -25,24 +25,21 @@ function find_all_pages($options = [])
   return $result;
 }
 
-// Pages
-// function find_page_by_id($id, $options = [])
-// {
-//   global $db;
+function find_all($table)
+{
+  global $db;
 
-//   $visible = $options['visible'] ?? false;
+  $query = "SELECT * FROM " . $table . " ";
+  $query .= "ORDER BY id ASC";
 
-//   $sql = "SELECT * FROM pages ";
-//   $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
-//   if ($visible) {
-//     $sql .= "AND visible = true";
-//   }
-//   $result = mysqli_query($db, $sql);
-//   confirm_result_set($result);
-//   $page = mysqli_fetch_assoc($result);
-//   mysqli_free_result($result);
-//   return $page; // returns an assoc. array
-// }
+  $stmt = $db->prepare($query);
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  confirm_result_set($result);
+  return $result;
+}
 
 
 function find_by_id($table, $id, $options = [])
