@@ -35,7 +35,7 @@ if (is_post_request()) {
   <div class="page edit">
     <h1>Edit Page</h1>
 
-    <?php echo display_errors($errors); ?>
+    <!-- <?php echo display_errors($errors); ?> -->
 
     <form action="<?php echo url_for('/staff/pages/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>
