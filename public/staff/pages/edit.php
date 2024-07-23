@@ -1,7 +1,6 @@
 <?php
 
 require_once('../../../private/initialize.php');
-// require_login();
 if (!isset($_GET['id'])) {
   $_SESSION['message'] = "The page was updated successfully.";
   redirect_to(url_for('/staff/pages/index.php'));
@@ -27,7 +26,7 @@ if (is_post_request()) {
 ?>
 
 <?php $page_title = 'Edit Page'; ?>
-<?php include(SHARED_PATH . '/admin_header.php'); ?>
+<?php include(PRIVATE_HEADER); ?>
 
 <div id="content">
 
@@ -83,4 +82,4 @@ if (is_post_request()) {
 
 </div>
 
-<?php include(SHARED_PATH . '/admin_footer.php'); ?>
+<?php include(PRIVATE_FOOTER); ?>

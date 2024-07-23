@@ -1,12 +1,18 @@
 <?php
 require_once('../../../private/initialize.php');
 if (is_post_request()) {
-  $page = [
+  // $page = [
+  //   'page_name' => 'New Title',
+  //   'position' => '1',
+  //   'visible' => '1',
+  //   'content' => ''
+  // ];
+  $page = array(
     'page_name' => 'New Title',
     'position' => '1',
     'visible' => '1',
     'content' => ''
-  ];
+  );
   $page = replace_with_post_values($page);
 
   $result = insert_values(PAGE_TABLE, PAGE_TABLE_TYPE_DEFINITION, $page);
