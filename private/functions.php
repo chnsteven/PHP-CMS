@@ -130,3 +130,54 @@ function replace_with_post_values($default_values)
   }
   return $result;
 }
+
+function create_radio_button($table_name, $label, $name, $submit_text, $id, $value)
+{
+  $output = '';
+  $output .= '<form action="' . url_for('/staff/' . $table_name . '/edit.php?id=' . h(u($id))) . '" method="post">';
+  $output .= '<dl>';
+  $output .= '<dt>' . h($label) . '</dt>';
+  $output .= '<dd>';
+  $output .= '<input type="radio" name="' . h($name) . '" value="1" ' . ($value == "1" ? 'checked' : '') . ' /> Yes';
+  $output .= '<input type="radio" name="' . h($name) . '" value="0" ' . ($value == "0" ? 'checked' : '') . ' /> No';
+  $output .= '</dd>';
+  $output .= '</dl>';
+  $output .= '<div id="operations">';
+  $output .= '<input type="submit" value="' . h($submit_text) . '" />';
+  $output .= '</div>';
+  $output .= '</form>';
+  return $output;
+}
+
+function create_text_input($table_name, $label, $name, $submit_text, $id, $value)
+{
+  $output = '';
+  $output .= '<form action="' . url_for('/staff/' . $table_name . '/edit.php?id=' . h(u($id))) . '" method="post">';
+  $output .= '<dl>';
+  $output .= '<dt>' . h($label) . '</dt>';
+  $output .= '<dd><input type="text" name="' . h($name) . '" value="' . h($value) . '" /></dd>';
+  $output .= '</dl>';
+  $output .= '<div id="operations">';
+  $output .= '<input type="submit" value="' . h($submit_text) . '" />';
+  $output .= '</div>';
+  $output .= '</form>';
+  return $output;
+}
+
+
+function create_large_text_input($table_name, $label, $name, $submit_text, $id, $value)
+{
+  $output = '';
+  $output .= '<form action="' . url_for('/staff/' . $table_name . '/edit.php?id=' . h(u($id))) . '" method="post">';
+  $output .= '<dl>';
+  $output .= '<dt>' . h($label) . '</dt>';
+  $output .= '<dd>';
+  $output .= '<textarea name="' . h($name) . '" cols="60" rows="10">' . h($value) . '</textarea>';
+  $output .= '</dd>';
+  $output .= '</dl>';
+  $output .= '<div id="operations">';
+  $output .= '<input type="submit" value="' . h($submit_text) . '" />';
+  $output .= '</div>';
+  $output .= '</form>';
+  return $output;
+}
