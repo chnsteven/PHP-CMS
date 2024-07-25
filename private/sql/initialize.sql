@@ -28,17 +28,3 @@ CREATE TABLE `pages` (
 
 INSERT INTO `pages` VALUES (1,'Education',1,true, 'Education content');
 INSERT INTO `pages` VALUES (2,'Experience',2,true, 'Experience content');
-
-
--- TODO: Remove
-CREATE TABLE `products` (
-  `name` varchar(255),
-  `price` double,
-  `quantity` INT(3)
-);
-
-CREATE TABLE `users2` (
-  `username` varchar(255),
-  `email` varchar(255),
-  `password` varchar(255)
-);

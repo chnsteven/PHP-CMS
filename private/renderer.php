@@ -62,9 +62,10 @@ class IndexRenderer
             $output .= '</tr>';
         }
 
-        $output .= '</table>';
+
         mysqli_free_result($this->records);
 
+        $output .= '</table>';
         $output .= '</div>';
         $output .= '</div>';
 
@@ -94,8 +95,10 @@ class DeleteRenderer
     {
         if (is_post_request()) {
             $result = delete($this->table_name, $this->id);
-            $_SESSION['message'] = "The record was deleted successfully.";
-            redirect_to(url_for('/staff/' . $this->table_name . '/index.php'));
+            if ($result === true) {
+                $_SESSION['message'] = "The record was deleted successfully.";
+                redirect_to(url_for('/staff/' . $this->table_name . '/index.php'));
+            }
         }
     }
 
@@ -149,10 +152,13 @@ class ShowRenderer
         $output .= '<a class="action" href="' . url_for('/index.php?id=' . h(u($this->record['id'])) . '&preview=true') . '" target="_blank">Preview</a>';
         $output .= '</div>';
         $output .= '<div class="attributes">';
-        $output .= '<dl><dt>Page Name</dt><dd>' . h($this->record['page_name']) . '</dd></dl>';
-        $output .= '<dl><dt>Position</dt><dd>' . h($this->record['position']) . '</dd></dl>';
-        $output .= '<dl><dt>Visible</dt><dd>' . ($this->record['visible'] == '1' ? 'true' : 'false') . '</dd></dl>';
-        $output .= '<dl><dt>Content</dt><dd>' . h($this->record['content']) . '</dd></dl>';
+
+
+        foreach ($this->record as $key => $value) {
+            $output .= '<dl><dt>' . ucwords(str_replace('_', ' ', $key)) . '</dt>';
+            $output .= '<dd>' . h($value) . '</dd></dl>';
+        }
+
         $output .= '</div>';
         $output .= '</div>';
         $output .= '</div>';
