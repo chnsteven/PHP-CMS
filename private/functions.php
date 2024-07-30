@@ -131,53 +131,50 @@ function replace_with_post_values($default_values)
   return $result;
 }
 
-function create_radio_button($table_name, $label, $name, $submit_text, $id, $value)
+function create_text_input_field($field, $value = "")
 {
-  $output = '';
-  $output .= '<form action="' . url_for('/staff/' . $table_name . '/edit.php?id=' . h(u($id))) . '" method="post">';
-  $output .= '<dl>';
-  $output .= '<dt>' . h($label) . '</dt>';
-  $output .= '<dd>';
-  $output .= '<input type="radio" name="' . h($name) . '" value="1" ' . ($value == "1" ? 'checked' : '') . ' /> Yes';
-  $output .= '<input type="radio" name="' . h($name) . '" value="0" ' . ($value == "0" ? 'checked' : '') . ' /> No';
-  $output .= '</dd>';
-  $output .= '</dl>';
-  $output .= '<div id="operations">';
-  $output .= '<input type="submit" value="' . h($submit_text) . '" />';
-  $output .= '</div>';
-  $output .= '</form>';
-  return $output;
+  $element = '';
+  $element .= '<dl><dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt><dd>';
+  $element .= '<input type="text" name="' . $field . '" value="' . $value . '" autocomplete="off" /></dd></dl>';
+  return $element;
 }
 
-function create_text_input($table_name, $label, $name, $submit_text, $id, $value)
+function create_datepicker_input_field($field)
 {
-  $output = '';
-  $output .= '<form action="' . url_for('/staff/' . $table_name . '/edit.php?id=' . h(u($id))) . '" method="post">';
-  $output .= '<dl>';
-  $output .= '<dt>' . h($label) . '</dt>';
-  $output .= '<dd><input type="text" name="' . h($name) . '" value="' . h($value) . '" /></dd>';
-  $output .= '</dl>';
-  $output .= '<div id="operations">';
-  $output .= '<input type="submit" value="' . h($submit_text) . '" />';
-  $output .= '</div>';
-  $output .= '</form>';
-  return $output;
+  // Set the default timezone to ensure the correct date is retrieved
+  date_default_timezone_set('Canada/Pacific'); // Replace with your local time zone
+  $today = date('Y-m-d');
+
+  $element = '<dl>';
+  $element .= '<dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>';
+  $element .= '<dd>';
+  $element .= '<input type="text" id="' . $field . '" name="' . $field . '" value="' . $today . '" />';
+  $element .= '</dd>';
+  $element .= '</dl>';
+
+  return $element;
 }
 
-
-function create_large_text_input($table_name, $label, $name, $submit_text, $id, $value)
+function create_multi_line_text_input_field($field, $value = "", $cols = 60, $rows = 10)
 {
-  $output = '';
-  $output .= '<form action="' . url_for('/staff/' . $table_name . '/edit.php?id=' . h(u($id))) . '" method="post">';
-  $output .= '<dl>';
-  $output .= '<dt>' . h($label) . '</dt>';
-  $output .= '<dd>';
-  $output .= '<textarea name="' . h($name) . '" cols="60" rows="10">' . h($value) . '</textarea>';
-  $output .= '</dd>';
-  $output .= '</dl>';
-  $output .= '<div id="operations">';
-  $output .= '<input type="submit" value="' . h($submit_text) . '" />';
-  $output .= '</div>';
-  $output .= '</form>';
-  return $output;
+  $element = '';
+  $element .= '<dl>
+  <dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>
+  <dd>';
+  $element .= '<textarea name="' . $field . '" value="' . $value . '" ';
+  $element .= 'cols="' . $cols . '" rows="' . $rows . '"></textarea></dd></dl>';
+  return $element;
+}
+
+function create_checkbox_field($field, $value = 0)
+{
+  $isChecked = $value == '1' ? 'checked' : '';
+
+  $element = '';
+  $element .= '<dl>
+  <dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>
+  <dd>';
+  $element .= '<input type="hidden" name="' . $field . '" value="0" />';
+  $element .= '<input type="checkbox" name="' . $field . '" value="1" ' . $isChecked . ' /></dd></dl>';
+  return $element;
 }

@@ -1,4 +1,6 @@
 <?php require_once('../../../private/initialize.php');
+// echo $_SESSION['debug'] ?? '';
+
 $table = find_all(USER_TABLE);
 
 $renderer = new IndexRenderer('users', $table);

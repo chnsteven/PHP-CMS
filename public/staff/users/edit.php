@@ -3,78 +3,49 @@
 require_once('../../../private/initialize.php');
 if (!isset($_GET['id'])) {
   $_SESSION['message'] = "The page was updated successfully.";
-  redirect_to(url_for('/staff/pages/index.php'));
+  redirect_to(url_for('/staff/users/index.php'));
 }
 $id = $_GET['id'];
 // Handle form values sent by new.php
-$page = [
-  'page_name' => '',
-  'position' => '1',
-  'visible' => '0',
-  'content' => '',
+$user = array(
+  'username' => '',
+  'post_content' => '',
+  'post_date' => '',
+  'user_uuid' => '',
+  'is_posted' => '0',
   'id' => $id
-];
-$page = replace_with_post_values($page);
+);
+$user = replace_with_post_values($user);
 if (is_post_request()) {
-  $result = update_table(PAGE_TABLE, PAGE_TABLE_TYPE_DEFINITION, $page);
-  redirect_to(url_for('/staff/pages/index.php'));
+  $result = update_table(USER_TABLE, USER_TABLE_TYPE_DEFINITION, $user);
+  redirect_to(url_for('/staff/users/index.php'));
 } else {
-  $page = find_by_id(PAGE_TABLE, $id);
+  $user = find_by_id(USER_TABLE, $id);
 }
 
 
 ?>
 
-<?php $page_title = 'Edit Page'; ?>
+<?php $title = 'Edit User'; ?>
 <?php include(PRIVATE_HEADER); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/pages/index.php'); ?>">&laquo; Back</a>
+  <a class="back-link" href="<?php echo url_for('/staff/users/index.php'); ?>">&laquo; Back</a>
 
-  <div class="page edit">
-    <h1>Edit Page</h1>
+  <div class="user edit">
+    <h1>Edit User</h1>
 
     <?php echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/staff/pages/edit.php?id=' . h(u($id))); ?>" method="post">
-      <dl>
-        <dt>Page Name</dt>
-        <dd><input type="text" name="page_name" value="<?php echo h($page['page_name']); ?>" /></dd>
-      </dl>
-      <dl>
-        <dt>Position</dt>
-        <!-- <dd>
-          <select name="position">
-            <?php
-            for ($i = 1; $i <= $page_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if ($page["position"] == $i) {
-                echo " selected";
-              }
-              echo ">{$i}</option>";
-            }
-            ?>
-          </select>
-        </dd> -->
-      </dl>
-      <dl>
-        <dt>Visible</dt>
-        <dd>
-          <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1" <?php if ($page['visible'] == "1") {
-                                                            echo " checked";
-                                                          } ?> />
-        </dd>
-      </dl>
-      <dl>
-        <dt>Content</dt>
-        <dd>
-          <textarea name="content" cols="60" rows="10"><?php echo h($page['content']); ?></textarea>
-        </dd>
-      </dl>
+    <form action="<?php echo url_for('/staff/users/edit.php?id=' . h(u($id))); ?>" method="post">
+      <?php echo create_text_input_field("username", $user['username']); ?>
+      <?php echo create_multi_line_text_input_field("post_content", $user['post_content']); ?>
+      <?php echo create_datepicker_input_field("post_date", $user['post_date']); ?>
+      <?php echo create_text_input_field("user_uuid", $user['user_uuid']); ?>
+      <?php echo create_checkbox_field("is_posted", $user['is_posted']); ?>
       <div id="operations">
-        <input type="submit" value="Edit Page" />
+        <input type="submit" value="Edit user" />
       </div>
     </form>
 

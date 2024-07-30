@@ -95,10 +95,9 @@ class DeleteRenderer
     {
         if (is_post_request()) {
             $result = delete($this->table_name, $this->id);
-            if ($result === true) {
-                $_SESSION['message'] = "The record was deleted successfully.";
-                redirect_to(url_for('/staff/' . $this->table_name . '/index.php'));
-            }
+            echo $result;
+            $_SESSION['message'] = "The record was deleted successfully.";
+            redirect_to(url_for('/staff/' . h($this->table_name) . '/index.php'));
         }
     }
 
@@ -106,11 +105,10 @@ class DeleteRenderer
     {
         $output = '';
         $output .= '<div id="content">';
-        $output .= '<a class="back-link" href="' . url_for('/staff/' . $this->table_name . '/index.php') . '">&laquo; Back</a>';
-        $output .= '<div class="' . $this->table_name . ' delete">';
+        $output .= '<a class="back-link" href="' . url_for('/staff/' . h($this->table_name) . '/index.php') . '">&laquo; Back</a>';
+        $output .= '<div class="' . h($this->table_name) . ' delete">';
         $output .= '<h1>Delete ' . ucfirst(rtrim($this->table_name, 's')) . '</h1>';
         $output .= '<p>Are you sure you want to delete this ' . rtrim($this->table_name, 's') . '?</p>';
-        $output .= '<p class="item">' . h($this->record['page_name']) . '</p>';
         $output .= '<form action="' . url_for('/staff/' . $this->table_name . '/delete.php?id=' . h(u($this->record['id']))) . '" method="post">';
         $output .= '<div id="operations">';
         $output .= '<input type="submit" name="commit" value="Delete ' . ucfirst(rtrim($this->table_name, 's')) . '" />';
@@ -147,7 +145,7 @@ class ShowRenderer
         $output .= '<div id="content">';
         $output .= '<a class="back-link" href="' . url_for('/staff/' . $this->table_name . '/index.php') . '">&laquo; Back</a>';
         $output .= '<div class="' . $this->table_name . ' show">';
-        $output .= '<h1>Page: ' . h($this->record['page_name']) . '</h1>';
+        $output .= '<h1>' . ucfirst($this->table_name) . '</h1>';
         $output .= '<div class="actions">';
         $output .= '<a class="action" href="' . url_for('/index.php?id=' . h(u($this->record['id'])) . '&preview=true') . '" target="_blank">Preview</a>';
         $output .= '</div>';

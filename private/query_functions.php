@@ -13,22 +13,38 @@ function find_all($table)
 
   $result = $stmt->get_result();
 
+
+  // // Debugging: Print result as a HTML table
+  // echo '<table border="1">';
+  // echo '<tr>';
+  // // Print table headers
+  // $fields = $result->fetch_fields();
+  // foreach ($fields as $field) {
+  //   echo '<th>' . htmlspecialchars($field->name) . '</th>';
+  // }
+  // echo '</tr>';
+
+  // // Print table rows
+  // while ($row = $result->fetch_assoc()) {
+  //   echo '<tr>';
+  //   foreach ($row as $value) {
+  //     echo '<td>' . htmlspecialchars($value) . '</td>';
+  //   }
+  //   echo '</tr>';
+  // }
+  // echo '</table>';
+
   confirm_result_set($result);
   return $result;
 }
 
 
-function find_by_id($table, $id, $options = [])
+function find_by_id($table, $id)
 {
   global $db;
 
-  $visible = $options['visible'] ?? false;
-
   $query = "SELECT * FROM " . $table . " ";
   $query .= "WHERE id = ? ";
-  if ($visible) {
-    $query .= " AND visible = true";
-  }
 
   $stmt = $db->prepare($query);
 
@@ -39,7 +55,7 @@ function find_by_id($table, $id, $options = [])
   confirm_result_set($result);
   $result = $result->fetch_assoc();
   $stmt->close();
-  return $result; // returns an assoc. array
+  return $result;
 }
 
 function validate_page($page)
@@ -112,6 +128,7 @@ function insert_values($table, $type_definition, $values_array)
   $stmt->close();
   return $result;
 }
+
 function update_page($page)
 {
   global $db;
@@ -120,10 +137,6 @@ function update_page($page)
   if (!empty($errors)) {
     return $errors;
   }
-
-  // $old_page = find_page_by_id($page['id']);
-  // $old_position = $old_page['position'];
-  // shift_page_positions($old_position, $page['position'], $page['subject_id'], $page['id']);
 
   $sql = "UPDATE pages SET ";
   $sql .= "subject_id='" . db_escape($db, $page['subject_id']) . "', ";
@@ -153,7 +166,7 @@ function update_table($table, $type_definition, $values)
   // TODO: robust validate function
   // $errors = validate_page($page);
   // if (!empty($errors)) {
-  //   return $errors;
+  // return $errors;
   // }
   $query = "UPDATE " . db_escape($db, $table) . " SET ";
 
@@ -169,8 +182,6 @@ function update_table($table, $type_definition, $values)
   $params[] = db_escape($db, $values['id']);
   $type_definition .= "i";
 
-  // echo $query;
-
   $stmt = $db->prepare($query);
   if ($stmt === false) {
     die('mysqli prepare failed: ' . h($db->error));
@@ -182,6 +193,52 @@ function update_table($table, $type_definition, $values)
   $stmt->close();
   return $result; // returns an assoc. array
 }
+
+// function update_table($table, $type_definition, $values)
+// {
+//   global $db;
+
+//   // Initialize the query and parameters
+//   $query = "UPDATE " . db_escape($db, $table) . " SET ";
+//   $params = [];
+//   $escaped_values = [];
+
+//   foreach ($values as $column => $value) {
+//     if ($column !== 'id') {
+//       $query .= db_escape($db, $column) . " = ?, ";
+//       $params[] = $value; // Add to params for binding
+//       $escaped_values[] = db_escape($db, $value); // For debugging
+//     }
+//   }
+
+//   $query = rtrim($query, ", ");
+//   $query .= " WHERE id = ? LIMIT 1";
+//   $params[] = $values['id'];
+//   $escaped_values[] = db_escape($db, $values['id']); // For debugging
+//   $type_definition .= "i";
+
+//   // Debugging: Print the query with actual values
+//   $debug_query = $query;
+//   foreach ($escaped_values as $value) {
+//     $debug_query = preg_replace('/\?/', "'" . $value . "'", $debug_query, 1);
+//   }
+
+//   $_SESSION['debug'] = $debug_query;
+
+//   // Prepare and execute the statement
+//   $stmt = $db->prepare($query);
+//   if ($stmt === false) {
+//     die('mysqli prepare failed: ' . h($db->error));
+//   }
+
+//   $stmt->bind_param($type_definition, ...$params);
+
+//   $result = $stmt->execute();
+//   $stmt->close();
+
+//   return $result; // returns an assoc. array
+// }
+
 
 function delete($table, $id)
 {

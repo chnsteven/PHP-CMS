@@ -35,28 +35,10 @@ if (is_post_request()) {
   <div class="page edit">
     <h1>Edit Page</h1>
 
-    <!-- <?php echo display_errors($errors); ?> -->
-
     <form action="<?php echo url_for('/staff/pages/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>
         <dt>Page Name</dt>
         <dd><input type="text" name="page_name" value="<?php echo h($page['page_name']); ?>" /></dd>
-      </dl>
-      <dl>
-        <dt>Position</dt>
-        <!-- <dd>
-          <select name="position">
-            <?php
-            for ($i = 1; $i <= $page_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if ($page["position"] == $i) {
-                echo " selected";
-              }
-              echo ">{$i}</option>";
-            }
-            ?>
-          </select>
-        </dd> -->
       </dl>
       <dl>
         <dt>Visible</dt>
