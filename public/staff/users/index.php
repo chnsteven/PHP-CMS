@@ -1,5 +1,5 @@
 <?php require_once('../../../private/initialize.php');
-// echo $_SESSION['debug'] ?? '';
+require_login();
 
 $table = find_all(USER_TABLE);
 

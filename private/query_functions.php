@@ -1,6 +1,39 @@
 <?php
 require_once("initialize.php");
 
+
+function no_admin_exists()
+{
+  global $db;
+  $query = "SELECT COUNT(*) AS count FROM admins";
+  $result = $db->query($query);
+
+  if ($result) {
+    $row = $result->fetch_assoc();
+    return $row['count'] == 0;
+  } else {
+    die("Error checking table: " . $db->error);
+  }
+}
+function insert_admin()
+{
+  if (no_admin_exists()) {
+    global $db;
+    $username = ADMIN_USER;
+    $hashed_password = password_hash(ADMIN_PASS, PASSWORD_BCRYPT);
+
+    $stmt = $db->prepare("INSERT INTO `admins` (username, password) VALUES (?, ?)");
+    if ($stmt) {
+      $stmt->bind_param('ss', $username, $hashed_password);
+      $stmt->execute();
+      $stmt->close();
+    }
+  } else {
+    // echo "Admin user already exists.";
+  }
+}
+
+
 function find_all($table)
 {
   global $db;

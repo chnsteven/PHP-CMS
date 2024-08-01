@@ -1,4 +1,7 @@
-<?php require_once('../../../private/initialize.php');
+<?php
+require_once('../../../private/initialize.php');
+
+require_login();
 $table = find_all(PAGE_TABLE);
 $renderer = new IndexRenderer('pages', $table);
 

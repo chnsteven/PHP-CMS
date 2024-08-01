@@ -1,6 +1,7 @@
 <?php
-
 require_once('../../../private/initialize.php');
+
+require_login();
 if (!isset($_GET['id'])) {
   $_SESSION['message'] = "The page was updated successfully.";
   redirect_to(url_for('/staff/users/index.php'));

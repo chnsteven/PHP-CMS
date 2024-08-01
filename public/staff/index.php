@@ -1,5 +1,9 @@
-<?php require_once('../../private/initialize.php'); ?>
-<?php include(PRIVATE_HEADER); ?>
+<?php
+require_once('../../private/initialize.php');
+
+require_login();
+include(PRIVATE_HEADER);
+?>
 
 <div id="content">
   <div id="main-menu">
