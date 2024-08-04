@@ -7,3 +7,6 @@
 
 # Ignore IDE/Editor configuration files
 .vscode/
+
+# Ignore SQL
+/private/sql/

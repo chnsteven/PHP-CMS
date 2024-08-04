@@ -84,3 +84,97 @@ function display_session_message()
     return '<div id="message">' . h($msg) . "</div>";
   }
 }
+
+function create_table($set, $headers)
+{
+  // Start building the table
+  $output = '<table class="list">';
+  $output .= '<thead>';
+  $output .= '<tr>';
+
+  // Add the headers with formatting
+  foreach ($headers as $header) {
+    // Replace underscores with spaces and capitalize the first letter of each word
+    $formatted_header = ucwords(str_replace('_', ' ', $header));
+    $output .= '<th>' . h($formatted_header) . '</th>';
+  }
+
+  $output .= '<th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>';
+  $output .= '</tr>';
+  $output .= '</thead>';
+  $output .= '<tbody>';
+
+  // Add the data rows
+  while ($row = mysqli_fetch_assoc($set)) {
+    $output .= '<tr>';
+    foreach ($headers as $key) {
+      $output .= '<td>' . h($row[$key]) . '</td>';
+    }
+    $output .= '<td><a class="action" href="' . url_for('/staff/subjects/show.php?id=' . h(u($row['id']))) . '">View</a></td>';
+    $output .= '<td><a class="action" href="' . url_for('/staff/subjects/edit.php?id=' . h(u($row['id']))) . '">Edit</a></td>';
+    $output .= '<td><a class="action" href="' . url_for('/staff/subjects/delete.php?id=' . h(u($row['id']))) . '">Delete</a></td>';
+    $output .= '</tr>';
+  }
+  $output .= '</tbody>';
+  $output .= '</table>';
+
+  // Return the table HTML
+  return $output;
+}
+
+function replace_with_post_values($default_values)
+{
+  $result = [];
+  foreach ($default_values as $key => $default) {
+    $result[$key] = $_POST[$key] ?? $default;
+  }
+  return $result;
+}
+
+function create_text_input_field($field, $value = "")
+{
+  $element = '';
+  $element .= '<dl><dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt><dd>';
+  $element .= '<input type="text" name="' . $field . '" value="' . $value . '" autocomplete="off" /></dd></dl>';
+  return $element;
+}
+
+function create_datepicker_input_field($field)
+{
+  // Set the default timezone to ensure the correct date is retrieved
+  date_default_timezone_set('Canada/Pacific'); // Replace with your local time zone
+  $today = date('Y-m-d');
+
+  $element = '<dl>';
+  $element .= '<dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>';
+  $element .= '<dd>';
+  $element .= '<input type="text" id="' . $field . '" name="' . $field . '" value="' . $today . '" />';
+  $element .= '</dd>';
+  $element .= '</dl>';
+
+  return $element;
+}
+
+function create_multi_line_text_input_field($field, $value = "", $cols = 60, $rows = 10)
+{
+  $element = '';
+  $element .= '<dl>
+  <dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>
+  <dd>';
+  $element .= '<textarea name="' . $field . '" value="' . $value . '" ';
+  $element .= 'cols="' . $cols . '" rows="' . $rows . '"></textarea></dd></dl>';
+  return $element;
+}
+
+function create_checkbox_field($field, $value = 0)
+{
+  $isChecked = $value == '1' ? 'checked' : '';
+
+  $element = '';
+  $element .= '<dl>
+  <dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>
+  <dd>';
+  $element .= '<input type="hidden" name="' . $field . '" value="0" />';
+  $element .= '<input type="checkbox" name="' . $field . '" value="1" ' . $isChecked . ' /></dd></dl>';
+  return $element;
+}
