@@ -161,8 +161,8 @@ function create_multi_line_text_input_field($field, $value = "", $cols = 60, $ro
   $element .= '<dl>
   <dt>' . ucfirst(str_replace('_', ' ', $field)) . '</dt>
   <dd>';
-  $element .= '<textarea name="' . $field . '" value="' . $value . '" ';
-  $element .= 'cols="' . $cols . '" rows="' . $rows . '"></textarea></dd></dl>';
+  $element .= '<textarea name="' . $field . '" ';
+  $element .= 'cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea></dd></dl>';
   return $element;
 }
 

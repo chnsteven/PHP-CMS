@@ -36,39 +36,10 @@ if (is_post_request()) {
     <?php echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/staff/pages/new.php'); ?>" method="post">
-      <dl>
-        <dt>Page Name</dt>
-        <dd><input type="text" name="page_name" value="" /></dd>
-      </dl>
-      <dl>
-        <dt>Position</dt>
-        <dd>
-          <select name="position">
-            <?php
-            for ($i = 1; $i <= $page_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if ($page["position"] == $i) {
-                echo " selected";
-              }
-              echo ">{$i}</option>";
-            }
-            ?>
-          </select>
-        </dd>
-      </dl>
-      <dl>
-        <dt>Visible</dt>
-        <dd>
-          <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1" />
-        </dd>
-      </dl>
-      <dl>
-        <dt>Content</dt>
-        <dd>
-          <textarea name="content" cols="60" rows="10"></textarea>
-        </dd>
-      </dl>
+      <?php echo create_text_input_field("page_name"); ?>
+      <?php echo create_text_input_field("position"); ?>
+      <?php echo create_checkbox_field("visible"); ?>
+      <?php echo create_multi_line_text_input_field("content"); ?>
       <div id="operations">
         <input type="submit" value="Create Page" />
       </div>

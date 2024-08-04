@@ -37,25 +37,10 @@ if (is_post_request()) {
     <h1>Edit Page</h1>
 
     <form action="<?php echo url_for('/staff/pages/edit.php?id=' . h(u($id))); ?>" method="post">
-      <dl>
-        <dt>Page Name</dt>
-        <dd><input type="text" name="page_name" value="<?php echo h($page['page_name']); ?>" /></dd>
-      </dl>
-      <dl>
-        <dt>Visible</dt>
-        <dd>
-          <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1" <?php if ($page['visible'] == "1") {
-                                                            echo " checked";
-                                                          } ?> />
-        </dd>
-      </dl>
-      <dl>
-        <dt>Content</dt>
-        <dd>
-          <textarea name="content" cols="60" rows="10"><?php echo h($page['content']); ?></textarea>
-        </dd>
-      </dl>
+      <?php echo create_text_input_field("page_name", $page['page_name']); ?>
+      <?php echo create_text_input_field("position", $page['position']); ?>
+      <?php echo create_checkbox_field("visible", $page['visible']); ?>
+      <?php echo create_multi_line_text_input_field("content", $page['content']); ?>
       <div id="operations">
         <input type="submit" value="Edit Page" />
       </div>

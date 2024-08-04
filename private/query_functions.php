@@ -9,8 +9,10 @@ function no_admin_exists()
   $result = $db->query($query);
 
   if ($result) {
-    $row = $result->fetch_assoc();
-    return $row['count'] == 0;
+    // $row = $result->fetch_assoc();
+    // return $row['count'] == 0;
+    $row = $result->fetch_row();
+    return $row[0] == 0;
   } else {
     die("Error checking table: " . $db->error);
   }
@@ -27,12 +29,12 @@ function insert_admin()
       $stmt->bind_param('ss', $username, $hashed_password);
       $stmt->execute();
       $stmt->close();
+      echo "Admin added successfully.";
     }
   } else {
     // echo "Admin user already exists.";
   }
 }
-
 
 function find_all($table)
 {
