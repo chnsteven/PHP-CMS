@@ -48,27 +48,6 @@ function find_all($table)
 
   $result = $stmt->get_result();
 
-
-  // // Debugging: Print result as a HTML table
-  // echo '<table border="1">';
-  // echo '<tr>';
-  // // Print table headers
-  // $fields = $result->fetch_fields();
-  // foreach ($fields as $field) {
-  //   echo '<th>' . htmlspecialchars($field->name) . '</th>';
-  // }
-  // echo '</tr>';
-
-  // // Print table rows
-  // while ($row = $result->fetch_assoc()) {
-  //   echo '<tr>';
-  //   foreach ($row as $value) {
-  //     echo '<td>' . htmlspecialchars($value) . '</td>';
-  //   }
-  //   echo '</tr>';
-  // }
-  // echo '</table>';
-
   confirm_result_set($result);
   return $result;
 }
@@ -155,6 +134,9 @@ function insert_values($table, $type_definition, $values_array)
     die('mysqli prepare failed: ' . h($db->error));
   }
   $params = array_values($values_array);
+  foreach ($values_array as $key => $value) {
+    echo $key . " " . $value;
+  }
   $stmt->bind_param($type_definition, ...$params);
   $result = $stmt->execute();
   if ($result === false) {

@@ -1,4 +1,10 @@
 <?php
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+
 ob_start(); // output buffering is turned on
 session_start(); // turn on session
 
@@ -17,7 +23,8 @@ define("USER_TABLE", 'users');
 define("USER_TABLE_TYPE_DEFINITION", 'ssssi');
 define("ADMIN_TABLE", 'admins');
 define("ADMIN_TABLE_TYPE_DEFINITION", 'ssssi');
-
+define("COMMENT_TABLE", 'comments');
+define("COMMENT_TABLE_TYPE_DEFINITION", 'iss');
 
 // Assign the root URL to a PHP constant
 // * Do not need to include the domain
