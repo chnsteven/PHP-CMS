@@ -24,7 +24,7 @@ define("USER_TABLE_TYPE_DEFINITION", 'ssssi');
 define("ADMIN_TABLE", 'admins');
 define("ADMIN_TABLE_TYPE_DEFINITION", 'ssssi');
 define("COMMENT_TABLE", 'comments');
-define("COMMENT_TABLE_TYPE_DEFINITION", 'iss');
+define("COMMENT_TABLE_TYPE_DEFINITION", 'siss');
 
 // Assign the root URL to a PHP constant
 // * Do not need to include the domain
