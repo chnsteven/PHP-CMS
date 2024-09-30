@@ -8,15 +8,13 @@ if (is_get_request()) {
         header('Content-Type: application/json');
         $res = [];
 
-        $uuid = $_COOKIE['user_uuid'] ?? '';
-        error_log("UUID from cookie: " . $uuid);
+        $uuid = $_GET['uuid'] ?? "";
 
         while ($user = $comments->fetch_assoc()) {
             $comment = [];
             foreach ($user as $key => $value) {
                 if ($key === "uuid") {
-                    // Ensure both values are strings for comparison
-                    $comment['is_user_comment'] = (string)$value === (string)$uuid;
+                    $comment['is_user_comment'] = $value === $uuid; // Check against the UUID from session storage
                 } elseif (gettype($value) === "integer") {
                     $comment[$key] = (int)$value;
                 } elseif ($key === "nickname" && $comment["anonymous"]) {
@@ -27,8 +25,9 @@ if (is_get_request()) {
             }
             $res[] = $comment;
         }
+
         // Return the comments as JSON
-        echo json_encode($res);
+        echo json_encode(["uuid" => $uuid, "comments" => $res]);
     } else {
         echo json_encode(["error" => "No comments found."]);
     }

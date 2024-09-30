@@ -13,33 +13,12 @@ if (is_post_request()) {
     } else {
         http_response_code(400);
         echo json_encode(['error' => 'Invalid JSON']);
-        exit; // Ensure to exit after sending a response
+        exit;
     }
 
-    // Check for existing user UUID cookie
-    $cookie_name = "user_uuid";
-    $uuid = $_COOKIE[$cookie_name] ?? null;
 
-    // If no UUID is found, create a new one and set a cookie
-    if (!$uuid) {
-        $uuid = uniqid('', true);
-        setcookie(
-            $cookie_name,
-            $uuid,
-            [
-                'expires' => time() + (86400 * 14),
-                'path' => '/',
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'SameSite' => 'Strict'
-            ]
-        );
-    }
-
-    // Prepare the user data for insertion
     $user = array(
-        'uuid' => $uuid, // Use the UUID here
+        'uuid' => $data['uuid'] ?? '',
         'anonymous' => false,
         'nickname' => '',
         'content' => '',
@@ -47,14 +26,16 @@ if (is_post_request()) {
 
     $user = replace_with_post_values($user);
 
-    // Debug: Check UUID before inserting
-    error_log("Inserting comment with UUID: " . $user['uuid']);
-
     $result = insert_values(COMMENT_TABLE, COMMENT_TABLE_TYPE_DEFINITION, $user);
     if ($result === true) {
-        echo json_encode(["success" => true, "message" => "The comment was added successfully."]);
+        $new_id = mysqli_insert_id($db);
+        // Return the UUID and a success message
+        echo json_encode([
+            'message' => "The comment was added successfully.\n",
+            'uuid' => $uuid . '\n'
+        ]);
     } else {
-        echo json_encode(["success" => false, "errors" => $result]);
+        $errors = $result;
     }
 }
 ?>
