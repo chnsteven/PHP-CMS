@@ -36,6 +36,24 @@ function insert_admin()
   }
 }
 
+function reset_comment_table()
+{
+  global $db;
+  $query = "DROP TABLE IF EXISTS `comments`;";
+  $query .= "
+  CREATE TABLE `comments` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `uuid` CHAR(255) NOT NULL,
+    `anonymous` TINYINT(1) DEFAULT 0,
+    `nickname` CHAR(36) NOT NULL, 
+    `content` TEXT NOT NULL,
+    KEY `index_nickname` (`nickname`)
+  );
+  ";
+
+  return mysqli_multi_query($db, $query);
+}
+
 function find_all($table)
 {
   global $db;
@@ -274,10 +292,11 @@ function delete($table, $id)
   $stmt->bind_param("i", $id);
   $stmt->execute();
 
-  $result = $stmt->get_result();
+  $affected_rows = $stmt->affected_rows;
+
   $stmt->close();
 
-  return $result; // returns an assoc. array
+  return $affected_rows > 0; // returns an assoc. array
 }
 
 // Admins

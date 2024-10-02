@@ -62,6 +62,10 @@ function is_patch_request()
   return $_SERVER['REQUEST_METHOD'] === 'PATCH';
 }
 
+function is_delete_request()
+{
+  return $_SERVER['REQUEST_METHOD'] === 'DELETE';
+}
 function display_errors($errors = array())
 {
   $output = '';
