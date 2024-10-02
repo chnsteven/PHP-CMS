@@ -60,6 +60,8 @@ function find_by_id($table, $id)
   $query = "SELECT * FROM " . $table . " ";
   $query .= "WHERE id = ? ";
 
+  var_dump($query);
+
   $stmt = $db->prepare($query);
 
   $stmt->bind_param('i', $id);
@@ -199,6 +201,9 @@ function update_table($table, $type_definition, $values)
   $params[] = db_escape($db, $values['id']);
   $type_definition .= "i";
 
+  // var_dump($query);
+
+  var_dump($values);
   $stmt = $db->prepare($query);
   if ($stmt === false) {
     die('mysqli prepare failed: ' . h($db->error));
@@ -208,7 +213,7 @@ function update_table($table, $type_definition, $values)
 
   $result = $stmt->execute();
   $stmt->close();
-  return $result; // returns an assoc. array
+  return $result;
 }
 
 // function update_table($table, $type_definition, $values)

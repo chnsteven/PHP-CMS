@@ -52,6 +52,16 @@ function is_get_request()
   return $_SERVER['REQUEST_METHOD'] === 'GET';
 }
 
+function is_put_request()
+{
+  return $_SERVER['REQUEST_METHOD'] === 'PUT';
+}
+
+function is_patch_request()
+{
+  return $_SERVER['REQUEST_METHOD'] === 'PATCH';
+}
+
 function display_errors($errors = array())
 {
   $output = '';
@@ -126,6 +136,15 @@ function replace_with_post_values($default_values)
   $result = [];
   foreach ($default_values as $key => $default) {
     $result[$key] = $_POST[$key] ?? $default;
+  }
+  return $result;
+}
+
+function replace_with_data($data, $default_values)
+{
+  $result = [];
+  foreach ($default_values as $key => $default) {
+    $result[$key] = $data[$key] ?? $default;
   }
   return $result;
 }
