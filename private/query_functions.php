@@ -54,20 +54,29 @@ function reset_comment_table()
   return mysqli_multi_query($db, $query);
 }
 
-function find_all($table)
+function find_all($table, $options = [])
 {
   global $db;
 
+
+  // Query to count the total number of rows in the table
+  $count_query = "SELECT COUNT(*) as total FROM " . $table;
+  $count_result = $db->query($count_query);
+  $total_rows = $count_result->fetch_assoc()['total'];
+
   $query = "SELECT * FROM " . $table . " ";
-  $query .= "ORDER BY id ASC";
+  $query .= "ORDER BY id DESC ";
+  if (isset($options['limit'])) {
+    $query .= "LIMIT " . db_escape($db, $options['limit']);
+  }
 
   $stmt = $db->prepare($query);
   $stmt->execute();
 
   $result = $stmt->get_result();
-
   confirm_result_set($result);
-  return $result;
+
+  return ['total_rows' => $total_rows, 'result' => $result];
 }
 
 

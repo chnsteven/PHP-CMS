@@ -18,6 +18,7 @@ if (is_delete_request()) {
     } else {
         echo json_encode([
             'error' => "The comment does not exist.\n",
+            'debug' => $id,
         ]);
     }
 }

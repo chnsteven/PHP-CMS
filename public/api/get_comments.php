@@ -2,13 +2,22 @@
 require_once('../../private/initialize.php');
 
 if (is_get_request()) {
-    $comments = find_all(COMMENT_TABLE);
+    $limit = $_GET['limit'] ?? "";
+    $uuid = $_GET['uuid'] ?? "";
+
+    if ($limit) {
+        $data = find_all(COMMENT_TABLE, ["limit" => $limit]);
+    } else {
+        $data = find_all(COMMENT_TABLE);
+    }
+
+    $num_of_rows = $data['total_rows'];
+    $comments = $data['result'];
+
 
     if ($comments) {
         header('Content-Type: application/json');
         $res = [];
-
-        $uuid = $_GET['uuid'] ?? "";
 
         while ($user = $comments->fetch_assoc()) {
             $comment = [];
@@ -27,7 +36,11 @@ if (is_get_request()) {
         }
 
         // Return the comments as JSON
-        echo json_encode(["uuid" => $uuid, "comments" => $res]);
+        echo json_encode([
+            "uuid" => $uuid,
+            "num_of_rows" => $num_of_rows,
+            "comments" => $res
+        ]);
     } else {
         echo json_encode(["error" => "No comments found."]);
     }

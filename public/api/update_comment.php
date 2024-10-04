@@ -5,7 +5,7 @@ if (is_patch_request()) {
     $jsonData = file_get_contents('php://input');
     $data = json_decode($jsonData, true);
 
-    $id = $data['id'] ?? '';
+    $id = $_GET['id'] ?? '';
 
     if (!$id) echo json_encode(['error' => 'Invalid ID']);
     // Check if decoding was successful
@@ -28,13 +28,13 @@ if (is_patch_request()) {
         $result = update_table(COMMENT_TABLE, COMMENT_TABLE_TYPE_DEFINITION, $user);
 
         if ($result === true) {
-            // Return the UUID and a success message
-            // var_dump($data);
             echo json_encode([
                 'message' => "The comment was updated successfully.\n",
             ]);
         } else {
-            $errors = $result;
+            echo json_encode([
+                'message' => "The comment wasn't updated successfully.\n",
+            ]);
         }
     } else {
         http_response_code(400);
