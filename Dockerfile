@@ -1,8 +1,5 @@
-# Use official PHP image
-FROM php:8.0-apache
+# You can change this to a newer version of MySQL available at
+# https://hub.docker.com/r/mysql/mysql-server/tags/
+FROM mysql/mysql-server:8.0.24
 
-# Copy project files to the working directory
-COPY . /var/www/html/
-
-# Install PHP extensions if needed (optional)
-RUN docker-php-ext-install mysqli
+COPY config/user.cnf /etc/mysql/my.cnf
